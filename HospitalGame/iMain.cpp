@@ -1,4 +1,4 @@
-﻿#include "iGraphics.h"
+#include "iGraphics.h"
 
 #include <windows.h>   // SHIFT detection
 #include <mmsystem.h>  // mciSendString
@@ -326,8 +326,14 @@ void iDraw()
 		charFrame = 0;
 	}
 
-	// player sprite (draw ONCE)
-	iShowImage(playerX, playerY, playerSize, playerSize, charImg[charFrame]);
+	// player sprite (draw ONCE) - rotated to face mouse cursor
+	double viewAngleDegrees = viewAngle * (180.0 / 3.14159265359) - 90.0;
+	glPushMatrix();
+	glTranslatef(playerX + playerSize / 2.0f, playerY + playerSize / 2.0f, 0);
+	glRotatef(viewAngleDegrees, 0, 0, 1);
+	glTranslatef(-(playerSize / 2.0f), -(playerSize / 2.0f), 0);
+	iShowImage(0, 0, playerSize, playerSize, charImg[charFrame]);
+	glPopMatrix();
 
 	// ===== flashlight rays =====
 	int frontOffset = 15;
